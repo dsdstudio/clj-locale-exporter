@@ -4,14 +4,11 @@
            (com.google.gdata.data.spreadsheet WorksheetFeed ListFeed CustomElementCollection))
   (:gen-class))
 
-(def sheet-id "1Yl4MIohwNJMgsnDrEnGFUc1lxxbEsqv6N-b4QMCRovs")
-
 (defn worksheet-url [sheet-id]
   (.getWorksheetFeedUrl (FeedURLFactory/getDefault) sheet-id "public" "basic"))
 
 (defn worksheet-service [sheet-id]
-  (let [url (worksheet-url sheet-id)]
-    (doto (new SpreadsheetService "ptcs-webca-service"))))
+  (new SpreadsheetService "spreadsheet"))
 
 (defn worksheet-feed-map [sheet-id]
   (let [service (worksheet-service sheet-id)]
@@ -33,5 +30,8 @@
          (filter #(not (clojure.string/starts-with? (get %1 "id") "#"))))))
 
 (defn -main [& args]
-  (clojure.pprint/print-table (list-feed sheet-id "string")))
+  (let [sheet-id (first args)]
+    (if (nil? sheet-id)
+      (println "usage : java -jar locale-exporter.jar <sheet-id>")
+      (clojure.pprint/print-table (list-feed (first args) "string")))))
 
