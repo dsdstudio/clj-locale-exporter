@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [locale-exporter.core :refer :all]))
 
+(def s-id "1Yl4MIohwNJMgsnDrEnGFUc1lxxbEsqv6N-b4QMCRovs")
+
 (deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+  (testing "Simple assert Test"
+    (is (not-empty s-id))))
