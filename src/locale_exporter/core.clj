@@ -32,8 +32,6 @@
          (filter #(not-empty (get %1 "id")))
          (filter #(not (clojure.string/starts-with? (get %1 "id") "#"))))))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
+(defn -main [& args]
   (clojure.pprint/print-table (list-feed sheet-id "string")))
 
