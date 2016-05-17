@@ -1,4 +1,4 @@
-# locale-exporter
+# locale-exporter [WIP]
 
 > DANGER! this is experimental project. do not use production!
 
@@ -10,7 +10,7 @@ google docs 에 있는 데이터를 properties 나 js 로 export 하는 유틸�
 
 ## Usage
 
-    $ java -jar locale-exporter-0.1.0-standalone.jar [args]
+    $ java -jar locale-exporter-0.1.0-standalone.jar <sheet-id> <file-name>
 
 ## Options
 
@@ -18,7 +18,6 @@ google docs 에 있는 데이터를 properties 나 js 로 export 하는 유틸�
 
 ### Bugs
 
-...
 
 ## License
 
