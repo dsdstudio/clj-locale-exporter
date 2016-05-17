@@ -1,5 +1,7 @@
 (ns locale-exporter.core
-  (:require clojure.pprint)
+  (:require clojure.pprint
+            [clojure.data.json :as json]
+            )
   (:import (com.google.gdata.client.spreadsheet FeedURLFactory SpreadsheetService)
            (com.google.gdata.data.spreadsheet WorksheetFeed ListFeed CustomElementCollection))
   (:gen-class))
@@ -32,8 +34,9 @@
          (filter #(not (clojure.string/starts-with? (get %1 "id") "#"))))))
 
 (defn -main [& args]
-  (let [sheet-id (first args)]
-    (if (nil? sheet-id)
-      (println "usage : java -jar locale-exporter.jar <sheet-id>")
-      (clojure.pprint/print-table (feed-list (first args) "string")))))
-
+  (let [sheet-id (first args)
+        file-name (second args)]
+    (if (or (nil? sheet-id) (nil? file-name))
+      (println "usage : java -jar locale-exporter.jar <sheet-id> <file-name>")
+      (with-open [w (clojure.java.io/writer file-name :append true)]
+        (.write w (json/write-str (feed-list sheet-id "string")))))))

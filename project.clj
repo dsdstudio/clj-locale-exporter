@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [com.google.gdata/core "1.47.1"]
+                 [org.clojure/data.json "0.2.6"]
                  [google-apps-clj "0.5.1"]]
   :main ^:skip-aot locale-exporter.core
   :target-path "target/%s"
