@@ -1,7 +1,6 @@
 (ns locale-exporter.core
   (:require clojure.pprint
-            [clojure.data.json :as json]
-            )
+            [clojure.data.json :as json])
   (:import (com.google.gdata.client.spreadsheet FeedURLFactory SpreadsheetService)
            (com.google.gdata.data.spreadsheet WorksheetFeed ListFeed CustomElementCollection))
   (:gen-class))
@@ -31,7 +30,8 @@
                      locale-data (into {} (map vec (partition 2 (clojure.string/split (.getPlainTextContent %1) #": |, "))))]
                  (assoc locale-data "id" id)))
          (filter #(not-empty (get %1 "id")))
-         (filter #(not (clojure.string/starts-with? (get %1 "id") "#"))))))
+         (filter #(not (clojure.string/starts-with? (get %1 "id") "#")))
+         (reduce #(assoc %1 (get %2 "id") (dissoc %2 "id")) {}))))
 
 (defn -main [& args]
   (let [sheet-id (first args)
