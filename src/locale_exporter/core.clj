@@ -33,10 +33,20 @@
          (filter #(not (clojure.string/starts-with? (get %1 "id") "#")))
          (reduce #(assoc %1 (get %2 "id") (dissoc %2 "id")) {}))))
 
+(defn print-usage []
+  (println "usage : java -jar locale-exporter.jar json <sheet-id> <file-name>")
+  (println "usage : java -jar locale-exporter.jar properties <sheet-id> <directory-path>"))
+
+(defn write-json [file-name data]
+  (with-open [w (clojure.java.io/writer file-name :append true)]
+    (.write w (json/write-str data))))
+
 (defn -main [& args]
-  (let [sheet-id (first args)
-        file-name (second args)]
-    (if (or (nil? sheet-id) (nil? file-name))
-      (println "usage : java -jar locale-exporter.jar <sheet-id> <file-name>")
-      (with-open [w (clojure.java.io/writer file-name :append true)]
-        (.write w (json/write-str (feed-list sheet-id "string")))))))
+  (if (= 3 (count args))
+    (let [file-type (first args)
+          sheet-id (second args)
+          file-name (nth args 2)]
+      (if (or (nil? sheet-id) (nil? file-name))
+        (print-usage)
+        (write-json file-name (feed-list sheet-id "string"))))
+  (print-usage)))
