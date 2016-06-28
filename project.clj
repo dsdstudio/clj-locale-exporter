@@ -7,6 +7,7 @@
                  [com.google.gdata/core "1.47.1"]
                  [org.clojure/data.json "0.2.6"]
                  [google-apps-clj "0.5.1"]]
+  :plugins [[cider/cider-nrepl "0.12.0"]]
   :main ^:skip-aot locale-exporter.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
