@@ -35,18 +35,36 @@
 
 (defn print-usage []
   (println "usage : java -jar locale-exporter.jar json <sheet-id> <file-name>")
-  (println "usage : java -jar locale-exporter.jar properties <sheet-id> <directory-path>"))
+  (println "usage : java -jar locale-exporter.jar properties <sheet-id> <directory-path>")
+  (System/exit -1))
 
 (defn write-json [file-name data]
   (with-open [w (clojure.java.io/writer file-name :append true)]
     (.write w (json/write-str data))))
 
+(defn to-properties-str [data]
+  (clojure.string/join "\n" (map #(clojure.string/join "=" %1) (seq data))))
+
+;; TODO 데이터 변환 필요 
+(defn write-properties [file-prefix data]
+  (map (fn [k v]
+         (with-open [w (clojure.java.io/writer (str file-prefix k ".properties") :append true)]
+           (.write w (to-properties-str data))))
+       (seq data)))
+
+(defn arguments-not-enough? [args]
+  (not= 3 (count args)))
+
+(defn is-json? [file-type]
+  (= "json" file-type))
+
+(defn is-properties? [file-type]
+  (= "properties" file-type))
+
 (defn -main [& args]
-  (if (= 3 (count args))
-    (let [file-type (first args)
-          sheet-id (second args)
-          file-name (nth args 2)]
-      (if (or (nil? sheet-id) (nil? file-name))
-        (print-usage)
-        (write-json file-name (feed-list sheet-id "string"))))
-  (print-usage)))
+  (if (arguments-not-enough? args) (print-usage))
+  (let [file-type (first args)
+        sheet-id (second args)
+        file-name (nth args 2)]
+    (if (is-json? file-type) (write-json file-name (feed-list sheet-id "string")))
+    (if (is-properties? file-type) (write-properties file-name (feed-list sheet-id "string")))))

@@ -2,7 +2,12 @@
   (:require [clojure.test :refer :all]
             [locale-exporter.core :refer :all]))
 
-(def s-id "1Yl4MIohwNJMgsnDrEnGFUc1lxxbEsqv6N-b4QMCRovs")
-(deftest a-test
-  (testing "Simple assert Test"
-    (is (not-empty s-id))))
+(def sid "1Yl4MIohwNJMgsnDrEnGFUc1lxxbEsqv6N-b4QMCRovs")
+
+(deftest predicate-test
+  (testing "is-json 테스트"
+    (is (is-json? "json"))
+    (is (not (is-json? "asdf"))))
+  (testing "is-properties? 테스트"
+    (is (is-properties? "properties"))
+    (is (not (is-properties? "qewrqwr")))))
