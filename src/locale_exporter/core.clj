@@ -42,15 +42,32 @@
   (with-open [w (clojure.java.io/writer file-name :append true)]
     (.write w (json/write-str data))))
 
-(defn to-properties-str [data]
-  (clojure.string/join "\n" (map #(clojure.string/join "=" %1) (seq data))))
+(defn to-properties-str [coll]
+  (println coll)
+  (clojure.string/join "\n" (map #(clojure.string/join "=" %1) (seq coll))))
 
-;; TODO 데이터 변환 필요 
+(defn to-locale-coll
+  "
+  {:key {:ko <val> :en <val>} :key ....} 
+  기존 raw data collection 을 가공하기 편한형태로 변환한다. 
+  [
+    {:locale [{:key :val} ... ]}
+    {:locale [{:key :val} ... ]}
+  ] 
+  "
+  [data locale-coll]
+  (let [result {}]
+    (map (fn [locale]
+           (assoc result locale (reduce #(assoc %1 (first %2) (get (second %2) locale)) {} data))) locale-coll)))
+
 (defn write-properties [file-prefix data]
-  (map (fn [k v]
-         (with-open [w (clojure.java.io/writer (str file-prefix k ".properties") :append true)]
-           (.write w (to-properties-str data))))
-       (seq data)))
+  (let [locales ["ko" "en"]
+        locale-data (to-locale-coll (seq data) locales)
+        file-ext ".properties"]
+    (println locale-data)
+    (doseq [d locale-data]
+      (with-open [w (clojure.java.io/writer (str file-prefix (first (seq d)) file-ext) :append true)]
+            (.write w (to-properties-str (second d)))))))
 
 (defn arguments-not-enough? [args]
   (not= 3 (count args)))
