@@ -1,6 +1,6 @@
 (ns locale-exporter.core
   (:require clojure.pprint
-            [clojure.data.json :as json])
+            [cheshire.core :refer :all])
   (:import (com.google.gdata.client.spreadsheet FeedURLFactory SpreadsheetService)
            (com.google.gdata.data.spreadsheet WorksheetFeed ListFeed CustomElementCollection))
   (:gen-class))
@@ -39,8 +39,8 @@
   (System/exit -1))
 
 (defn write-json [file-name data]
-  (with-open [w (clojure.java.io/writer file-name :append true)]
-    (.write w (json/write-str data))))
+    (generate-stream data (clojure.java.io/writer file-name) {:pretty true}))
+
 
 (defn to-properties-str [coll]
   (println coll)
