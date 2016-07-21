@@ -7,10 +7,16 @@ google docs 에 있는 데이터를 properties 나 js 로 export 하는 유틸�
 
 ## Installation
 
+	$ lein uberjar 
+
+	check your `target` directory
 
 ## Usage
-
-    $ java -jar locale-exporter-0.1.0-standalone.jar <sheet-id> <file-name>
+	
+	$ java -jar locale-exporter.jar <mode> <sheet-id> <file-name>
+	  mode : json | properties 
+	  sheet-id : your google sheet id 
+	  file-name : file name 
 
 ## Options
 
