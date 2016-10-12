@@ -2,6 +2,10 @@
 
 > DANGER! this is experimental project. do not use production!
 
+## what is this 
+
+globalization resource exporter (google spread sheet -> *.properties or *.js) 
+
 google docs 에 있는 데이터를 properties 나 js 로 export 하는 유틸리티입니다.
 국제화시 유용하게 사용될수 있습니다.
 
@@ -10,7 +14,7 @@ google docs 에 있는 데이터를 properties 나 js 로 export 하는 유틸�
 
 ## Usage
 
-    $ java -jar locale-exporter-0.1.0-standalone.jar <sheet-id> <file-name>
+    $ java -jar locale-exporter-0.1.0-standalone.jar <options> <sheet-id> <file-name>
 
 ## Options
 
