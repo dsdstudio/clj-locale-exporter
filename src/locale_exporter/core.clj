@@ -43,8 +43,7 @@
 
 
 (defn to-properties-str [coll]
-  (println coll)
-  (clojure.string/join "\n" (map #(clojure.string/join "=" %1) (seq coll))))
+  (clojure.string/join "\n" (map #(clojure.string/join "=" %1) coll)))
 
 (defn to-locale-coll
   "
@@ -56,18 +55,17 @@
   ] 
   "
   [data locale-coll]
-  (let [result {}]
-    (map (fn [locale]
-           (assoc result locale (reduce #(assoc %1 (first %2) (get (second %2) locale)) {} data))) locale-coll)))
+  (map (fn [locale]
+         [locale (for [[k m] data]
+           [k (get m locale)])]) locale-coll))
+
 
 (defn write-properties [file-prefix data]
-  (let [locales ["ko" "en"]
-        locale-data (to-locale-coll (seq data) locales)
+  (let [locale-data (to-locale-coll data ["ko" "en"])
         file-ext ".properties"]
-    (println locale-data)
-    (doseq [d locale-data]
-      (with-open [w (clojure.java.io/writer (str file-prefix (first (seq d)) file-ext) :append true)]
-            (.write w (to-properties-str (second d)))))))
+    (doseq [[k v] locale-data]
+      (with-open [w (clojure.java.io/writer (str file-prefix "_" k file-ext) :append true)]
+            (.write w (to-properties-str v))))))
 
 (defn arguments-not-enough? [args]
   (not= 3 (count args)))
