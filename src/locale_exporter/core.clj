@@ -61,7 +61,7 @@
 
 
 (defn write-properties [file-prefix data]
-  (let [locale-data (to-locale-coll data ["ko" "en" "ja" "tw" "th" "cn"])
+  (let [locale-data (to-locale-coll data ["ko" "en" "ja" "tw" "th" "zh"])
         file-ext ".properties"]
     (doseq [[k v] locale-data]
       (with-open [w (clojure.java.io/writer (str file-prefix "_" k file-ext))]
